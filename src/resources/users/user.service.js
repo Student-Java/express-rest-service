@@ -2,14 +2,14 @@ const usersRepo = require('./user.memory.repository');
 
 const getAll = async () => await usersRepo.getAll();
 
-const addUser = (name, login, password) => {
-  return usersRepo.addUser(name, login, password);
+const addUser = async (name, login, password) => {
+  return await usersRepo.addUser(name, login, password);
 };
 
-const getUserById = userId => usersRepo.getUserById(userId);
+const getUserById = async userId => await usersRepo.getUserById(userId);
 
-const updateUser = (userId, name, login, password) => {
-  return usersRepo.updateUser(userId, name, login, password);
+const updateUser = async (userId, name, login, password) => {
+  return await usersRepo.updateUser(userId, name, login, password);
 };
 
 const deleteUser = userId => usersRepo.deleteUser(userId);

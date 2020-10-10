@@ -1,26 +1,19 @@
 const User = require('./user.model');
 
-const usersDB = [
-  new User({
-    name: 'test',
-    login: 'test',
-    password: 'testPass'
-  }),
-  new User({
-    name: 'test2',
-    login: 'test2',
-    password: 'test2Pass'
-  })
-];
+const usersDB = new Map();
 
 const getAll = async () => {
-  return usersDB;
+  const arr = [];
+  for (const el of usersDB.values()) {
+    arr.push(el);
+  }
+  return arr;
 };
 
 const addUser = async (name, login, password) => {
   try {
     const newUser = await new User({ name, login, password });
-    usersDB.push(newUser);
+    usersDB.set(newUser.id, newUser);
     return newUser;
   } catch (error) {
     throw new Error(error);
@@ -28,25 +21,30 @@ const addUser = async (name, login, password) => {
 };
 
 const getUserById = async userId => {
-  return usersDB.find(el => el.id === userId);
+  if (usersDB.has(userId)) {
+    return usersDB.get(userId);
+  }
+  return undefined;
 };
 
 const updateUser = async (userId, name, login, password) => {
-  const foundUser = usersDB.find(x => x.id === userId);
-  if (foundUser) {
-    foundUser.name = name !== undefined ? name : foundUser.name;
-    foundUser.login = login !== undefined ? login : foundUser.login;
-    foundUser.password = password !== undefined ? password : foundUser.password;
+  const foundUser = { ...getUserById(userId) };
+  if (usersDB.has(userId)) {
+    usersDB.get(userId).name = name !== undefined ? name : foundUser.name;
+    usersDB.get(userId).login = login !== undefined ? login : foundUser.login;
+    usersDB.get(userId).password =
+      password !== undefined ? password : foundUser.password;
   }
-  return foundUser;
+
+  return usersDB.get(userId);
 };
 
 const deleteUser = async userId => {
-  const foundIdx = usersDB.findIndex(x => x.id === userId);
-  if (foundIdx >= 0) {
-    return usersDB.splice(foundIdx, 1);
+  if (usersDB.has(userId)) {
+    usersDB.delete(userId);
+    return true;
   }
-  return false;
+  return undefined;
 };
 
 module.exports = { getAll, addUser, getUserById, updateUser, deleteUser };

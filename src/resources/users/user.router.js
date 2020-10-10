@@ -41,7 +41,7 @@ router
   .delete(async (req, res) => {
     const deletedUser = await usersService.deleteUser(req.params.uid);
     if (deletedUser) {
-      res.json(User.toResponse(deletedUser));
+      res.json(deletedUser);
     } else {
       res.status(404).send('User not found');
     }
