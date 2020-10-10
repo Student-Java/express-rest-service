@@ -1,4 +1,5 @@
 const User = require('./user.model');
+const tasksRepo = require('../tasks/task.memory.repository');
 
 const usersDB = new Map();
 
@@ -41,8 +42,10 @@ const updateUser = async (userId, name, login, password) => {
 
 const deleteUser = async userId => {
   if (usersDB.has(userId)) {
+    const deletedUser = { ...usersDB.get(userId) };
+    await tasksRepo.resetUser(userId);
     usersDB.delete(userId);
-    return true;
+    return deletedUser;
   }
   return undefined;
 };
