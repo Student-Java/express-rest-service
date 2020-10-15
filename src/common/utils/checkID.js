@@ -11,4 +11,4 @@ const checkID = id => {
   return id;
 };
 
-module.exports = { checkID };
+module.exports = checkID;

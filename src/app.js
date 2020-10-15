@@ -4,6 +4,7 @@ const path = require('path');
 const YAML = require('yamljs');
 const userRouter = require('./resources/users/user.router');
 const boardRouter = require('./resources/boards/board.router');
+const { expresseventLog, errorHandler } = require('./middleware/log');
 
 const app = express();
 const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
@@ -20,7 +21,9 @@ app.use('/', (req, res, next) => {
   next();
 });
 
+app.use(expresseventLog);
 app.use('/users', userRouter);
 app.use('/boards', boardRouter);
+app.use(errorHandler);
 
 module.exports = app;

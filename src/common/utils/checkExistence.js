@@ -8,4 +8,4 @@ const checkExistence = async (get, entityName, ...restProps) => {
   return res;
 };
 
-module.exports = { checkExistence };
+module.exports = checkExistence;
