@@ -3,7 +3,7 @@ const Task = require('./task.model');
 const tasksDB = [];
 
 const getAllTasksByBoardId = async boardId => {
-  return tasksDB.filter(el => el.boardId === boardId);
+  return await tasksDB.filter(el => el.boardId === boardId);
 };
 
 const addTask = async (
@@ -14,7 +14,7 @@ const addTask = async (
   boardId,
   columnId
 ) => {
-  const newtask = new Task({
+  const newTask = new Task({
     title,
     order,
     description,
@@ -22,8 +22,8 @@ const addTask = async (
     boardId,
     columnId
   });
-  tasksDB.push(newtask);
-  return newtask;
+  tasksDB.push(newTask);
+  return newTask;
 };
 
 const getTaskById = async (boardId, taskId) => {
