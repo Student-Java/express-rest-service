@@ -1,12 +1,37 @@
 const boardsRepo = require('./board.memory.repository');
+const checkExistence = require('../../common/utils/checkExistence');
+const checkID = require('../../common/utils/checkID');
 
-const getAllBoards = () => boardsRepo.getAllBoards();
-const addBoard = (title, columns) => boardsRepo.addBoard(title, columns);
-const getBoardById = boardId => boardsRepo.getBoardById(boardId);
-const updateBoard = (boardId, title, columns) => {
-  return boardsRepo.updateBoard(boardId, title, columns);
+const getAllBoards = async () => await boardsRepo.getAllBoards();
+
+const addBoard = async (title, columns) => {
+  return await boardsRepo.addBoard(title, columns);
 };
-const deleteBoard = boardId => boardsRepo.deleteBoard(boardId);
+
+const getBoardById = async boardId => {
+  return await checkExistence(
+    boardsRepo.getBoardById,
+    'BOARD',
+    checkID(boardId)
+  );
+};
+
+const updateBoard = async (boardId, title, columns) => {
+  return await checkExistence(
+    boardsRepo.updateBoard,
+    'BOARD',
+    checkID(boardId),
+    title,
+    columns
+  );
+};
+const deleteBoard = async boardId => {
+  return await checkExistence(
+    boardsRepo.deleteBoard,
+    'BOARD',
+    checkID(boardId)
+  );
+};
 
 module.exports = {
   getAllBoards,
